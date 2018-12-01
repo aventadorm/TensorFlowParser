@@ -1,29 +1,15 @@
-key: "stringValue"
-key: "stringValue"
-parentKey {
-  key: value
-  key: value
-  key: value
-  key: value
+name: "InceptionV1"
+input: "inputs"
+input_shape {
+  dim: 2
 }
-parentKey {
-  key: "stringValue"
-  key: "stringValue"
-  key: "stringValue"
-  key: "stringValue"
-  parentKey {
-    key: value
-    key: value
-  }
-  parentKey {
-    key: value
-    key: value
-    key: value
-    key: value
-    key: value
-    parentKey {
-      key: "stringValue"
-      key: value
-    }
+layer {
+  name: "Scale"
+  type: "Scale"
+  bottom: "Scale"
+  top: "Scale"
+  batch_norm_param {
+    use_global_stats: true
+    eps: 0001
   }
 }
