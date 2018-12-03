@@ -1,13 +1,16 @@
 grammar Prog;
 
-prog:	'name:' '"' ID '"' 'input:' '"' ID '"' 'input_shape' '{' dims '}' layers+ ;
+prog:	'name:' '"' progname '"' 'input:' '"' proginputname '"' 'input_shape' '{' dims '}' layers+ ;
 dims: ('dim:' INT)+ ;
 
+progname: ID;
+
+proginputname: ID;
 
 layers: 'layer' '{' layerparams+ '}';
 
 layerparams:
-            'name:' '"' ID '"'
+            'name:' '"' layername '"'
             |'type:' '"' ID '"'
             |'bottom:' '"' ID '"'
             |'top:' '"' ID '"'
@@ -19,6 +22,8 @@ layerparams:
             |'scale_param' '{' scaleparamparams+ '}'
             |'dropout_param' '{' dropoutparamparams+ '}'
             |'reshape_param' '{' reshapeparamparams+ '}' ;
+
+layername: ID;
 
 paramparams:
             'lr_mult:' INT
