@@ -11,10 +11,9 @@ layers: 'layer' '{' layerparams+ '}';
 
 layerparams:
             'name:' '"' layername '"'
-            |'type:' '"' ID '"'
-            |'bottom:' '"' ID '"'
-            |'top:' '"' ID '"'
-            |'name:' '"' ID '"'
+            |'type:' '"' layertype '"'
+            |'bottom:' '"' layerbottom '"'
+            |'top:' '"' layertop '"'
             |'param' '{' paramparams+ '}'
             |'convolution_param' '{' convolutionparamparams+ '}'
             |'batch_norm_param' '{' batchnormparamparams+ '}'
@@ -24,6 +23,9 @@ layerparams:
             |'reshape_param' '{' reshapeparamparams+ '}' ;
 
 layername: ID;
+layertype: ID;
+layerbottom: ID;
+layertop: ID;
 
 paramparams:
             'lr_mult:' INT
