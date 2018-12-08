@@ -26,4 +26,11 @@ layer {
       std: 0.01
     }
   }
+  batch_norm_param {
+    use_global_stats: true
+    eps: 0.001
+  }
+  scale_param {
+    bias_term: true
+  }
 }
