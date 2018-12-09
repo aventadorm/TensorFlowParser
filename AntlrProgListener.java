@@ -8,6 +8,9 @@ public class AntlrProgListener extends ProgBaseListener {
     public ArrayList<LayerInfo> giveLayers(){
       return collectionOfLayers;
     }
+    public ProgInfo giveproginfo(){
+      return proginfo;
+    }
     @Override public void enterProg(ProgParser.ProgContext ctx){
       proginfo = new ProgInfo();
       collectionOfLayers = new ArrayList<LayerInfo>();
