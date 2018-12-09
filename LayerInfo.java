@@ -10,4 +10,7 @@ public class LayerInfo{
   ConvolutionParamInfo convolutionparaminfo;
   BatchNormParamInfo batchnormparaminfo;
   ScaleParamInfo scaleparaminfo;
+  PoolingParamInfo poolingparaminfo;
+  DropoutParamInfo dropoutparaminfo;
+  ReshapeParamInfo reshapeparaminfo;
 }

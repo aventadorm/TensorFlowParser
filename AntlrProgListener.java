@@ -33,7 +33,7 @@ public class AntlrProgListener extends ProgBaseListener {
     }
 
   	@Override public void exitLayers(ProgParser.LayersContext ctx) {
-      System.out.println(layerinfo.scaleparaminfo.bias_term);
+      System.out.println(layerinfo.reshapeparaminfo.shape.dims);
       //collectionOfLayers.add(layerinfo);
     }
 
@@ -103,6 +103,40 @@ public class AntlrProgListener extends ProgBaseListener {
     @Override public void enterScaleparambiasterm(ProgParser.ScaleparambiastermContext ctx) {
       layerinfo.scaleparaminfo.bias_term = ctx.getText();
     }
+    @Override public void enterPoolingparam(ProgParser.PoolingparamContext ctx) {
+      layerinfo.poolingparaminfo = new PoolingParamInfo();
+    }
+    @Override public void enterPoolingparampool(ProgParser.PoolingparampoolContext ctx) {
+      layerinfo.poolingparaminfo.pool = ctx.getText();
+    }
+    @Override public void enterPoolingkernelsize(ProgParser.PoolingkernelsizeContext ctx) {
+      layerinfo.poolingparaminfo.kernel_size = ctx.getText();
+    }
+    @Override public void enterPoolingparamstride(ProgParser.PoolingparamstrideContext ctx) {
+      layerinfo.poolingparaminfo.stride = ctx.getText();
+    }
+    @Override public void enterPoolingparampad(ProgParser.PoolingparampadContext ctx) {
+      layerinfo.poolingparaminfo.pad = ctx.getText();
+    }
+    @Override public void enterPoolingparamglobalpooling(ProgParser.PoolingparamglobalpoolingContext ctx) {
+      layerinfo.poolingparaminfo.global_pooling = ctx.getText();
+    }
+    @Override public void enterDropoutparam(ProgParser.DropoutparamContext ctx) {
+      layerinfo.dropoutparaminfo = new DropoutParamInfo();
+    }
+    @Override public void enterDropoutparamdropoutratio(ProgParser.DropoutparamdropoutratioContext ctx) {
+      layerinfo.dropoutparaminfo.dropout_ratio = ctx.getText();
+    }
+    @Override public void enterReshapeparam(ProgParser.ReshapeparamContext ctx) {
+      layerinfo.reshapeparaminfo = new ReshapeParamInfo();
+      layerinfo.reshapeparaminfo.shape = new Shape();
+      layerinfo.reshapeparaminfo.shape.dims = new ArrayList<String>();
+    }
+    @Override public void enterReshapedimvalue(ProgParser.ReshapedimvalueContext ctx) {
+      layerinfo.reshapeparaminfo.shape.dims.add(ctx.getText());
+    }
+
+
 
 
 

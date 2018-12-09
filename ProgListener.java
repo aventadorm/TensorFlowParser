@@ -17,16 +17,6 @@ public interface ProgListener extends ParseTreeListener {
 	 */
 	void exitProg(ProgParser.ProgContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link ProgParser#dims}.
-	 * @param ctx the parse tree
-	 */
-	void enterDims(ProgParser.DimsContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link ProgParser#dims}.
-	 * @param ctx the parse tree
-	 */
-	void exitDims(ProgParser.DimsContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link ProgParser#inputshape}.
 	 * @param ctx the parse tree
 	 */
@@ -227,6 +217,16 @@ public interface ProgListener extends ParseTreeListener {
 	 */
 	void exitBatchnormparameps(ProgParser.BatchnormparamepsContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link ProgParser#poolingparam}.
+	 * @param ctx the parse tree
+	 */
+	void enterPoolingparam(ProgParser.PoolingparamContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ProgParser#poolingparam}.
+	 * @param ctx the parse tree
+	 */
+	void exitPoolingparam(ProgParser.PoolingparamContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link ProgParser#poolingparamparams}.
 	 * @param ctx the parse tree
 	 */
@@ -236,6 +236,56 @@ public interface ProgListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitPoolingparamparams(ProgParser.PoolingparamparamsContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link ProgParser#poolingparampool}.
+	 * @param ctx the parse tree
+	 */
+	void enterPoolingparampool(ProgParser.PoolingparampoolContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ProgParser#poolingparampool}.
+	 * @param ctx the parse tree
+	 */
+	void exitPoolingparampool(ProgParser.PoolingparampoolContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link ProgParser#poolingkernelsize}.
+	 * @param ctx the parse tree
+	 */
+	void enterPoolingkernelsize(ProgParser.PoolingkernelsizeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ProgParser#poolingkernelsize}.
+	 * @param ctx the parse tree
+	 */
+	void exitPoolingkernelsize(ProgParser.PoolingkernelsizeContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link ProgParser#poolingparamstride}.
+	 * @param ctx the parse tree
+	 */
+	void enterPoolingparamstride(ProgParser.PoolingparamstrideContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ProgParser#poolingparamstride}.
+	 * @param ctx the parse tree
+	 */
+	void exitPoolingparamstride(ProgParser.PoolingparamstrideContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link ProgParser#poolingparampad}.
+	 * @param ctx the parse tree
+	 */
+	void enterPoolingparampad(ProgParser.PoolingparampadContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ProgParser#poolingparampad}.
+	 * @param ctx the parse tree
+	 */
+	void exitPoolingparampad(ProgParser.PoolingparampadContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link ProgParser#poolingparamglobalpooling}.
+	 * @param ctx the parse tree
+	 */
+	void enterPoolingparamglobalpooling(ProgParser.PoolingparamglobalpoolingContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ProgParser#poolingparamglobalpooling}.
+	 * @param ctx the parse tree
+	 */
+	void exitPoolingparamglobalpooling(ProgParser.PoolingparamglobalpoolingContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link ProgParser#scaleparam}.
 	 * @param ctx the parse tree
@@ -357,6 +407,16 @@ public interface ProgListener extends ParseTreeListener {
 	 */
 	void exitWeightfillerparamsstd(ProgParser.WeightfillerparamsstdContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link ProgParser#dropoutparam}.
+	 * @param ctx the parse tree
+	 */
+	void enterDropoutparam(ProgParser.DropoutparamContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ProgParser#dropoutparam}.
+	 * @param ctx the parse tree
+	 */
+	void exitDropoutparam(ProgParser.DropoutparamContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link ProgParser#dropoutparamparams}.
 	 * @param ctx the parse tree
 	 */
@@ -367,6 +427,26 @@ public interface ProgListener extends ParseTreeListener {
 	 */
 	void exitDropoutparamparams(ProgParser.DropoutparamparamsContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link ProgParser#dropoutparamdropoutratio}.
+	 * @param ctx the parse tree
+	 */
+	void enterDropoutparamdropoutratio(ProgParser.DropoutparamdropoutratioContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ProgParser#dropoutparamdropoutratio}.
+	 * @param ctx the parse tree
+	 */
+	void exitDropoutparamdropoutratio(ProgParser.DropoutparamdropoutratioContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link ProgParser#reshapeparam}.
+	 * @param ctx the parse tree
+	 */
+	void enterReshapeparam(ProgParser.ReshapeparamContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ProgParser#reshapeparam}.
+	 * @param ctx the parse tree
+	 */
+	void exitReshapeparam(ProgParser.ReshapeparamContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link ProgParser#reshapeparamparams}.
 	 * @param ctx the parse tree
 	 */
@@ -376,4 +456,24 @@ public interface ProgListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitReshapeparamparams(ProgParser.ReshapeparamparamsContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link ProgParser#reshapedims}.
+	 * @param ctx the parse tree
+	 */
+	void enterReshapedims(ProgParser.ReshapedimsContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ProgParser#reshapedims}.
+	 * @param ctx the parse tree
+	 */
+	void exitReshapedims(ProgParser.ReshapedimsContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link ProgParser#reshapedimvalue}.
+	 * @param ctx the parse tree
+	 */
+	void enterReshapedimvalue(ProgParser.ReshapedimvalueContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ProgParser#reshapedimvalue}.
+	 * @param ctx the parse tree
+	 */
+	void exitReshapedimvalue(ProgParser.ReshapedimvalueContext ctx);
 }

@@ -33,4 +33,18 @@ layer {
   scale_param {
     bias_term: true
   }
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+  dropout_param {
+    dropout_ratio: 0.2
+  }
+  reshape_param {
+    shape {
+      dim: 0
+      dim: 0
+    }
+  }
 }

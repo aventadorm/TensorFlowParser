@@ -1,7 +1,7 @@
 grammar Prog;
 
 prog:	'name:' '"' progname '"' 'input:' '"' proginputname '"' inputshape layers+ ;
-dims: ('dim:' INT)+ ;
+
 
 inputshape: 'input_shape' '{' inputshapedims+ '}';
 inputshapedims: 'dim:' inputshapedimvalue ;
@@ -20,10 +20,10 @@ layerparams:
             | param
             | convolutionparam
             | batchnormparam
-            |'pooling_param' '{' poolingparamparams+ '}'
+            | poolingparam
             | scaleparam
-            |'dropout_param' '{' dropoutparamparams+ '}'
-            |'reshape_param' '{' reshapeparamparams+ '}' ;
+            | dropoutparam
+            | reshapeparam ;
 
 layername: ID;
 layertype: ID;
@@ -45,12 +45,21 @@ batchnormparamparams:
 batchnormparamuseglobalstats: ID;
 batchnormparameps: INT;
 
+
+poolingparam: 'pooling_param' '{' poolingparamparams+ '}';
+
 poolingparamparams:
-            'pool:' ID
-            |'kernel_size:' INT
-            |'stride:' INT
-            |'pad:' INT
-            |'global_pooling:' ID;
+            'pool:' poolingparampool
+            |'kernel_size:' poolingkernelsize
+            |'stride:' poolingparamstride
+            |'pad:' poolingparampad
+            |'global_pooling:' poolingparamglobalpooling;
+poolingparampool: ID;
+poolingkernelsize: INT;
+poolingparamstride: INT;
+poolingparampad: INT;
+poolingparamglobalpooling: ID;
+
 scaleparam: 'scale_param' '{' scaleparamparams+ '}';
 
 scaleparamparams:
@@ -83,13 +92,17 @@ weightfillerparamstype: ID;
 
 weightfillerparamsstd: INT;
 
-
+dropoutparam: 'dropout_param' '{' dropoutparamparams+ '}';
 dropoutparamparams:
-            'dropout_ratio:' INT ;
+            'dropout_ratio:' dropoutparamdropoutratio ;
+dropoutparamdropoutratio: INT;
 
+
+reshapeparam: 'reshape_param' '{' reshapeparamparams+ '}';
 reshapeparamparams:
-            'shape' '{' dims '}';
-
+            'shape' '{' reshapedims+ '}';
+reshapedims: 'dim:' reshapedimvalue ;
+reshapedimvalue: INT;
 
 
 

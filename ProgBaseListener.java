@@ -27,18 +27,6 @@ public class ProgBaseListener implements ProgListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterDims(ProgParser.DimsContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitDims(ProgParser.DimsContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterInputshape(ProgParser.InputshapeContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -279,6 +267,18 @@ public class ProgBaseListener implements ProgListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterPoolingparam(ProgParser.PoolingparamContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitPoolingparam(ProgParser.PoolingparamContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterPoolingparamparams(ProgParser.PoolingparamparamsContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -286,6 +286,66 @@ public class ProgBaseListener implements ProgListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitPoolingparamparams(ProgParser.PoolingparamparamsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterPoolingparampool(ProgParser.PoolingparampoolContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitPoolingparampool(ProgParser.PoolingparampoolContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterPoolingkernelsize(ProgParser.PoolingkernelsizeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitPoolingkernelsize(ProgParser.PoolingkernelsizeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterPoolingparamstride(ProgParser.PoolingparamstrideContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitPoolingparamstride(ProgParser.PoolingparamstrideContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterPoolingparampad(ProgParser.PoolingparampadContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitPoolingparampad(ProgParser.PoolingparampadContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterPoolingparamglobalpooling(ProgParser.PoolingparamglobalpoolingContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitPoolingparamglobalpooling(ProgParser.PoolingparamglobalpoolingContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -435,6 +495,18 @@ public class ProgBaseListener implements ProgListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterDropoutparam(ProgParser.DropoutparamContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitDropoutparam(ProgParser.DropoutparamContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterDropoutparamparams(ProgParser.DropoutparamparamsContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -447,6 +519,30 @@ public class ProgBaseListener implements ProgListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterDropoutparamdropoutratio(ProgParser.DropoutparamdropoutratioContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitDropoutparamdropoutratio(ProgParser.DropoutparamdropoutratioContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterReshapeparam(ProgParser.ReshapeparamContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitReshapeparam(ProgParser.ReshapeparamContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterReshapeparamparams(ProgParser.ReshapeparamparamsContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -454,6 +550,30 @@ public class ProgBaseListener implements ProgListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitReshapeparamparams(ProgParser.ReshapeparamparamsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterReshapedims(ProgParser.ReshapedimsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitReshapedims(ProgParser.ReshapedimsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterReshapedimvalue(ProgParser.ReshapedimvalueContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitReshapedimvalue(ProgParser.ReshapedimvalueContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
