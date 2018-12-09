@@ -5,6 +5,9 @@ public class AntlrProgListener extends ProgBaseListener {
   InputShape inputshape;
   LayerInfo layerinfo;
   ArrayList<LayerInfo> collectionOfLayers;
+    public ArrayList<LayerInfo> giveLayers(){
+      return collectionOfLayers;
+    }
     @Override public void enterProg(ProgParser.ProgContext ctx){
       proginfo = new ProgInfo();
       collectionOfLayers = new ArrayList<LayerInfo>();
@@ -30,11 +33,13 @@ public class AntlrProgListener extends ProgBaseListener {
 
   	@Override public void enterLayers(ProgParser.LayersContext ctx) {
       layerinfo = new LayerInfo();
+      layerinfo.bottom = new ArrayList<String>();
     }
 
   	@Override public void exitLayers(ProgParser.LayersContext ctx) {
-      System.out.println(layerinfo.reshapeparaminfo.shape.dims);
-      //collectionOfLayers.add(layerinfo);
+      //System.out.println(layerinfo.reshapeparaminfo.shape.dims);
+      collectionOfLayers.add(layerinfo);
+      //System.out.println("Size is: " + collectionOfLayers.size());
     }
 
   	@Override public void enterLayername(ProgParser.LayernameContext ctx) {
@@ -46,7 +51,7 @@ public class AntlrProgListener extends ProgBaseListener {
     }
 
   	@Override public void enterLayerbottom(ProgParser.LayerbottomContext ctx) {
-      layerinfo.bottom = ctx.getText();
+      layerinfo.bottom.add(ctx.getText());
     }
 
   	@Override public void enterLayertop(ProgParser.LayertopContext ctx) {
