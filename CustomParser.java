@@ -27,15 +27,25 @@ public class CustomParser{
     String convoString = "";
     String dropoutString = "";
     String softmaxString = "";
-
-    //ProgSentenceContext ProgSentenceContext = parser.ProgSentence();
-
     ParseTreeWalker walker = new ParseTreeWalker();
     AntlrProgListener listener = new AntlrProgListener();
     walker.walk(listener, tree);
     ArrayList<LayerInfo> layers = listener.giveLayers();
     ArrayList<LayerInfo> layersToRemove = new ArrayList<LayerInfo>();
     //System.out.println(layers.size());
+
+    //Check if convolution layers have bn-scale-relu
+    HashMap<String, Integer> map = new HashMap<>();
+
+    for(LayerInfo layer : layers){
+      if(layer.type.equals("BatchNorm") || layer.type.equals("Scale") || layer.type.equals("ReLU")){
+        if(map.get(layer.bottom.get(0)) == null){
+          map.put(layer.bottom.get(0), new Integer(0));
+        }
+        map.put(layer.bottom.get(0), map.get(layer.bottom.get(0)) + 1);
+      }
+    }
+    System.out.println(map.keySet());
 
     for(LayerInfo layer : layers){
       if(layer.type.equals("Concat")){
@@ -110,10 +120,7 @@ public class CustomParser{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-
   }
-
   public static String softmaxPrinter(ArrayList<LayerInfo> layers, LayerInfo layerToPrint, ArrayList<LayerInfo> layersToRemove){
     String returnString = "";
     returnString += "end_points['" + layerToPrint.name + "'] = slim.softmax(logits, scope='" + layerToPrint.name + "')\n";
