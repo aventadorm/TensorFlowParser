@@ -17,10 +17,15 @@ public class CustomParser{
   }
   private static void printProg(String ProgSentence){
     ProgLexer lexer = new ProgLexer(new ANTLRInputStream(ProgSentence));
-
     CommonTokenStream tokens = new CommonTokenStream(lexer);
     ProgParser parser = new ProgParser(tokens);
     ParseTree tree = parser.prog();
+    String printString = "";
+    String concatString = "";
+    String convoString = "";
+    String dropoutString = "";
+    String softmaxString = "";
+
     //ProgSentenceContext ProgSentenceContext = parser.ProgSentence();
 
     ParseTreeWalker walker = new ParseTreeWalker();
@@ -32,63 +37,91 @@ public class CustomParser{
 
     for(LayerInfo layer : layers){
       if(layer.type.equals("Concat")){
-        concatPrinter(layers, layer, layersToRemove);
+        concatString += concatPrinter(layers, layer, layersToRemove);
       }
     }
     for(LayerInfo layer : layers){
       if(((layer.type.equals("Convolution")) || (layer.type.equals("Pooling"))) && !layersToRemove.contains(layer)){
-        convoPrinter(layers, layer, layersToRemove);
+        convoString += convoPrinter(layers, layer, layersToRemove);
       }
     }
     for(LayerInfo layer : layers){
       if(layer.type.equals("Dropout")){
-        dropoutPrinter(layers, layer, layersToRemove);
+        dropoutString += dropoutPrinter(layers, layer, layersToRemove);
       }
     }
     for(LayerInfo layer : layers){
       if(layer.type.equals("Softmax")){
-        softmaxPrinter(layers, layer, layersToRemove);
+        softmaxString += softmaxPrinter(layers, layer, layersToRemove);
       }
     }
     ProgInfo proginfo = listener.giveproginfo();
     String defaultimagesize = proginfo.inputshape.dims.get(proginfo.inputshape.dims.size()-1);
-    System.out.println(proginfo.name + "." + "default_image_size = " + defaultimagesize);
+    defaultimagesize = proginfo.name + "." + "default_image_size = " + defaultimagesize + "\n\n";
+
+    String lastText;
+    lastText = readFileAsString("afterTemplate.txt");
+    String firstText;
+    firstText = readFileAsString("beforeTemplate.txt");
+
+    printString += firstText;
+    printString += convoString;
+    printString += concatString;
+    printString += dropoutString;
+    printString += softmaxString;
+    printString += defaultimagesize;
+    printString += lastText;
+
+    //System.out.println(printString);
+    try {
+			File file = new File("generated_simple.py");
+			FileWriter fileWriter = new FileWriter(file);
+			fileWriter.write(printString);
+			fileWriter.flush();
+			fileWriter.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+
   }
 
-  public static void softmaxPrinter(ArrayList<LayerInfo> layers, LayerInfo layerToPrint, ArrayList<LayerInfo> layersToRemove){
+  public static String softmaxPrinter(ArrayList<LayerInfo> layers, LayerInfo layerToPrint, ArrayList<LayerInfo> layersToRemove){
     String returnString = "";
     returnString += "end_points['" + layerToPrint.name + "'] = slim.softmax(logits, scope='" + layerToPrint.name + "')\n";
     returnString += "return logits, end_points\n";
+    return returnString;
     //System.out.println(returnString);
   }
-  public static void dropoutPrinter(ArrayList<LayerInfo> layers, LayerInfo layerToPrint, ArrayList<LayerInfo> layersToRemove){
+  public static String dropoutPrinter(ArrayList<LayerInfo> layers, LayerInfo layerToPrint, ArrayList<LayerInfo> layersToRemove){
     String returnString = "";
     returnString += "endpoint = 'Logits'\n";
     returnString += "with tf.variable_scope(end_point):\n";
-    returnString += "net = slim.dropout(net, " + layerToPrint.dropoutparaminfo.dropout_ratio + ", scope='" + layerToPrint.name + "')\n";
+    float actualdropoutratio = 1 - Float.parseFloat(layerToPrint.dropoutparaminfo.dropout_ratio);
+    returnString += "net = slim.dropout(net, " + actualdropoutratio + ", scope='" + layerToPrint.name + "')\n";
     returnString += "logits = slim.conv2d(net, num_classes, [1, 1], activation_fn=None, normalizer_fn=None, scope='Conv2d_0c_1x1')\n";
     returnString += "logits = tf.squeeze(logits, [1, 2], name='SpatialSqueeze')\n";
     returnString += "end_points[end_point] = logits\n";
-
+    return returnString;
     //System.out.println(returnString);
 
   }
-
-  public static void convoPrinter(ArrayList<LayerInfo> layers, LayerInfo layerToPrint, ArrayList<LayerInfo> layersToRemove){
+  public static String convoPrinter(ArrayList<LayerInfo> layers, LayerInfo layerToPrint, ArrayList<LayerInfo> layersToRemove){
     String returnString = "";
     returnString += "endpoint = '" + layerToPrint.name + "'\n";
     if(layerToPrint.type.equals("Convolution")){
       returnString += "net = slim.conv2d(net, " + layerToPrint.convolutionparaminfo.num_output + ", [" + layerToPrint.convolutionparaminfo.kernel_size + "," + layerToPrint.convolutionparaminfo.kernel_size + "], stride=" + layerToPrint.convolutionparaminfo.stride + " scope=end_point)\n";
-      returnString += "end_points[end_point] = net";
+      returnString += "end_points[end_point] = net\n\n";
     }
     if(layerToPrint.type.equals("Pooling")){
       returnString += "net = slim.max_pool2d(net, [" + layerToPrint.poolingparaminfo.kernel_size + "," + layerToPrint.poolingparaminfo.kernel_size + "], stride=" + layerToPrint.poolingparaminfo.stride + " scope=end_point)\n";
-      returnString += "end_points[end_point] = net";
+      returnString += "end_points[end_point] = net\n\n";
     }
+    return returnString;
     //System.out.println(returnString);
 
   }
-  public static void concatPrinter(ArrayList<LayerInfo> layers, LayerInfo layerToPrint, ArrayList<LayerInfo> layersToRemove){
+  public static String concatPrinter(ArrayList<LayerInfo> layers, LayerInfo layerToPrint, ArrayList<LayerInfo> layersToRemove){
     String returnString = "";
     returnString += "endpoint = '" + layerToPrint.name + "'" + "\n";
     returnString += "with tf.variable_scope(end_point):\n";
@@ -122,10 +155,10 @@ public class CustomParser{
       }
 
     }
-    returnString += "net = tf.concat(axis=3, values=[branch_0, branch_1, branch_2, branch_3])\nend_points[end_point] = net\n";
+    returnString += "net = tf.concat(axis=3, values=[branch_0, branch_1, branch_2, branch_3])\nend_points[end_point] = net\n\n\n";
     layersToRemove.add(layerToPrint);
 
-
+    return returnString;
     //System.out.println(returnString);
   }
   public static LayerInfo findLayer(ArrayList<LayerInfo> layers, String name){
