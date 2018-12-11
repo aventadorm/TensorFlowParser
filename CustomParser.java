@@ -35,6 +35,7 @@ public class CustomParser{
     walker.walk(listener, tree);
     ArrayList<LayerInfo> layers = listener.giveLayers();
     ArrayList<LayerInfo> layersToRemove = new ArrayList<LayerInfo>();
+    ProgInfo proginfo = listener.giveproginfo();
     //System.out.println(layers.size());
 
     //Check if convolution layers have bn-scale-relu
@@ -48,7 +49,13 @@ public class CustomParser{
         map.put(layer.bottom.get(0), map.get(layer.bottom.get(0)) + 1);
       }
     }
-
+    for(String key : map.keySet()){
+      if(map.get(key) != 3){
+        int i = 3 - map.get(key);
+        System.err.println(key + " does not have " + i + " of the 3 layers BatchNorm, Scale and RelU.\nQuitting.\n");
+        System.exit(0);
+      }
+    }
     for(LayerInfo layer : layers){
       if(layer.type.equals("Concat")){
         mainString += concatPrinter(layers, layer, layersToRemove);
@@ -68,17 +75,63 @@ public class CustomParser{
       }
     }
 
-    for(LayerInfo layer : layers){
-      
-    }
+    ArrayList<String> bottomString = new ArrayList<String>();
+    bottomString.add(proginfo.input);
+    Boolean notDone = true;
+    Boolean isInConcat;
+    ArrayList<LayerInfo> layersToAvoid = new ArrayList<LayerInfo>();
+
+    do{
+      //System.out.println("Bottom string is : " + bottomString.get(0));
+      for(LayerInfo layer : layers){
+        if(layer.bottom.get(0).equals(bottomString.get(0)) && ((layer.type.equals("Convolution")) || (layer.type.equals("Pooling")) || (layer.type.equals("Concat")) || (layer.type.equals("Dropout")))){
+          bottomString.add(layer.name);
+          if(layer.type.equals("Dropout")){
+            notDone = false;
+          }
+          isInConcat = false;
+          for(LayerInfo concatLayer : layers){
+            if(concatLayer.type.equals("Concat")){
+              for(String bottoms : concatLayer.bottom){
+                if(bottoms.equals(layer.name)){
+                  //isInConcat = true;
+                  //System.out.println(layer.name);
+                  layersToAvoid.add(layer);
+                }
+              }
+            }
+          }
+          if(!layersToRemove.contains(layer)){
+            //System.out.println(layer.name);
+          }
+        }
+
+      }
+      bottomString.remove(0);
+      if(bottomString.get(0).equals("logits")){
+        notDone = false;
+      }
+    }while(notDone);
+
+for(LayerInfo layer : layers){
+        if(
+            ( layer.type.equals("Convolution") ||
+              layer.type.equals("Pooling") ||
+              layer.type.equals("Concat") ||
+              layer.type.equals("Dropout")
+            ) &&
+            (
+              !layersToAvoid.contains(layer)
+            )
+        ){
+          System.out.println(layer.name);
+        }
+}
 
 
 
 
 
-
-
-    ProgInfo proginfo = listener.giveproginfo();
     String defaultimagesize = proginfo.inputshape.dims.get(proginfo.inputshape.dims.size()-1);
     defaultimagesize = proginfo.name + "." + "default_image_size = " + defaultimagesize + "\n\n";
 
