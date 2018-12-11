@@ -24,6 +24,9 @@ public class CustomParser{
     String multiplexPrintString = "";
     String concatString = "";
     String multiplexConcatString = "";
+    String mainString = "";
+    String multiplexMainString = "";
+    String independentString = "";
     String convoString = "";
     String dropoutString = "";
     String softmaxString = "";
@@ -45,29 +48,36 @@ public class CustomParser{
         map.put(layer.bottom.get(0), map.get(layer.bottom.get(0)) + 1);
       }
     }
-    System.out.println(map.keySet());
 
     for(LayerInfo layer : layers){
       if(layer.type.equals("Concat")){
-        concatString += concatPrinter(layers, layer, layersToRemove);
-        multiplexConcatString += multiplexConcatPrinter(layers, layer, layersToRemove);
+        mainString += concatPrinter(layers, layer, layersToRemove);
+        multiplexMainString += multiplexConcatPrinter(layers, layer, layersToRemove);
       }
-    }
-    for(LayerInfo layer : layers){
       if(((layer.type.equals("Convolution")) || (layer.type.equals("Pooling"))) && !layersToRemove.contains(layer)){
-        convoString += convoPrinter(layers, layer, layersToRemove);
+        mainString += convoPrinter(layers, layer, layersToRemove);
+        multiplexMainString += convoPrinter(layers, layer, layersToRemove);
       }
-    }
-    for(LayerInfo layer : layers){
       if(layer.type.equals("Dropout")){
-        dropoutString += dropoutPrinter(layers, layer, layersToRemove);
+        mainString += dropoutPrinter(layers, layer, layersToRemove);
+        multiplexMainString += convoPrinter(layers, layer, layersToRemove);
       }
-    }
-    for(LayerInfo layer : layers){
       if(layer.type.equals("Softmax")){
-        softmaxString += softmaxPrinter(layers, layer, layersToRemove);
+        mainString += softmaxPrinter(layers, layer, layersToRemove);
+        multiplexMainString += convoPrinter(layers, layer, layersToRemove);
       }
     }
+
+    for(LayerInfo layer : layers){
+      
+    }
+
+
+
+
+
+
+
     ProgInfo proginfo = listener.giveproginfo();
     String defaultimagesize = proginfo.inputshape.dims.get(proginfo.inputshape.dims.size()-1);
     defaultimagesize = proginfo.name + "." + "default_image_size = " + defaultimagesize + "\n\n";
@@ -89,21 +99,16 @@ public class CustomParser{
 
     printString += firstText;
     printString += secondText;
-    printString += convoString;
-    printString += concatString;
-    printString += dropoutString;
-    printString += softmaxString;
+    printString += mainString;
     printString += defaultimagesize;
     printString += lastText;
 
     multiplexPrintString += firstText;
     multiplexPrintString += multiplexSecondText;
-    multiplexPrintString += convoString;
-    multiplexPrintString += multiplexConcatString;
-    multiplexPrintString += dropoutString;
-    multiplexPrintString += softmaxString;
+    multiplexPrintString += multiplexMainString;
     multiplexPrintString += defaultimagesize;
     multiplexPrintString += lastText;
+
 
     //System.out.println(printString);
     try {
@@ -258,3 +263,27 @@ public class CustomParser{
     return text;
   }
 }
+/*
+//System.out.println(map.keySet());
+
+for(LayerInfo layer : layers){
+  if(layer.type.equals("Concat")){
+    concatString += concatPrinter(layers, layer, layersToRemove);
+    multiplexConcatString += multiplexConcatPrinter(layers, layer, layersToRemove);
+  }
+}
+for(LayerInfo layer : layers){
+  if(((layer.type.equals("Convolution")) || (layer.type.equals("Pooling"))) && !layersToRemove.contains(layer)){
+    convoString += convoPrinter(layers, layer, layersToRemove);
+  }
+}
+for(LayerInfo layer : layers){
+  if(layer.type.equals("Dropout")){
+    dropoutString += dropoutPrinter(layers, layer, layersToRemove);
+  }
+}
+for(LayerInfo layer : layers){
+  if(layer.type.equals("Softmax")){
+    softmaxString += softmaxPrinter(layers, layer, layersToRemove);
+  }
+}*/

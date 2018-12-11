@@ -37,22 +37,6 @@ endpoint = 'MaxPool_3a_3x3'
 net = slim.max_pool2d(net, [3,3], stride=2 scope=end_point)
 end_points[end_point] = net
 
-endpoint = 'MaxPool_4a_3x3'
-net = slim.max_pool2d(net, [3,3], stride=2 scope=end_point)
-end_points[end_point] = net
-
-endpoint = 'MaxPool_5a_2x2'
-net = slim.max_pool2d(net, [3,3], stride=2 scope=end_point)
-end_points[end_point] = net
-
-endpoint = 'AvgPool_0a_7x7'
-net = slim.max_pool2d(net, [null,null], stride=null scope=end_point)
-end_points[end_point] = net
-
-endpoint = 'Logits/Conv2d_0c_1x1'
-net = slim.conv2d(net, 1000, [1,1], stride=1 scope=end_point)
-end_points[end_point] = net
-
 endpoint = 'Mixed_3b'
 net = selectinput(end_point, net)with tf.variable_scope(end_point):
 with tf.variable_scope('Branch_0'):
@@ -86,6 +70,10 @@ branch_3 = slim.conv2d(branch_3, 64, [1, 1], scope='Mixed_3c/Branch_3/Conv2d_0b_
 net = tf.concat(axis=3, values=[branch_0, branch_1, branch_2, branch_3])
 end_points[end_point] = net
 
+
+endpoint = 'MaxPool_4a_3x3'
+net = slim.max_pool2d(net, [3,3], stride=2 scope=end_point)
+end_points[end_point] = net
 
 endpoint = 'Mixed_4b'
 net = selectinput(end_point, net)with tf.variable_scope(end_point):
@@ -172,6 +160,10 @@ net = tf.concat(axis=3, values=[branch_0, branch_1, branch_2, branch_3])
 end_points[end_point] = net
 
 
+endpoint = 'MaxPool_5a_2x2'
+net = slim.max_pool2d(net, [3,3], stride=2 scope=end_point)
+end_points[end_point] = net
+
 endpoint = 'Mixed_5b'
 net = selectinput(end_point, net)with tf.variable_scope(end_point):
 with tf.variable_scope('Branch_0'):
@@ -206,17 +198,16 @@ net = tf.concat(axis=3, values=[branch_0, branch_1, branch_2, branch_3])
 end_points[end_point] = net
 
 
-endpoint = 'Logits'
-with tf.variable_scope(end_point):
-net = slim.dropout(net, 0.8, scope='Logits/Dropout_0b')
-logits = slim.conv2d(net, num_classes, [1, 1], activation_fn=None, normalizer_fn=None, scope='Conv2d_0c_1x1')
+endpoint = 'AvgPool_0a_7x7'
+net = slim.max_pool2d(net, [null,null], stride=null scope=end_point)
+end_points[end_point] = net
 
-logits = tf.squeeze(logits, [1, 2], name='SpatialSqueeze')
-end_points[end_point] = logits
+endpoint = 'Logits/Dropout_0b'
+endpoint = 'Logits/Conv2d_0c_1x1'
+net = slim.conv2d(net, 1000, [1,1], stride=1 scope=end_point)
+end_points[end_point] = net
 
-end_points['Predictions'] = slim.softmax(logits, scope='Predictions')
-return logits, end_points
-
+endpoint = 'Predictions'
 InceptionV1.default_image_size = 224
 
 ##############################################################################
