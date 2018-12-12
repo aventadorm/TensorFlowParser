@@ -218,7 +218,7 @@ public class CustomParser{
 			fileWriter.flush();
 			fileWriter.close();
       multiplexFileWriter.write(firstText);
-      multiplexFileWriter.write(secondText);
+      multiplexFileWriter.write(multiplexSecondText);
       multiplexFileWriter.write(multiplexIndependentString);
       multiplexFileWriter.write(defaultimagesize);
       multiplexFileWriter.write(lastText);

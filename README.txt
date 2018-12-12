@@ -29,4 +29,3 @@ seen from the output that the topology of the layers is still retained. Even the
 layer can be put to the end of the file and it will show up in the correct order and proper first
 parameter in the slim.conv2d function.
 3. test3.prototxt :
-Please ignore generated_simple.py and generated_multiplexing.py. They are created because the ordered generation was experimental.
