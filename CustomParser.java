@@ -145,7 +145,7 @@ public class CustomParser{
         !secondaryLayersToAvoid.contains(layer)
       )
       {
-        System.out.println(layer.name);
+        //System.out.println(layer.name);
         if(layer.type.equals("Dropout")){
           notDone = false;
         }

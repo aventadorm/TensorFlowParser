@@ -6,27 +6,7 @@ input_shape {
   dim: 224
   dim: 224
 }
-layer {
-  name: "Conv2d_1a_7x7"
-  type: "Convolution"
-  bottom: "inputs"
-  top: "Conv2d_1a_7x7"
-  param {
-    lr_mult: 1
-    decay_mult: 1
-  }
-  convolution_param {
-    bias_term: false
-    num_output: 64
-    pad: 3
-    kernel_size: 7
-    stride: 2
-    weight_filler {
-      type: "xavier"
-      std: 0.01
-    }
-  }
-}
+
 layer {
   name: "Conv2d_1a_7x7_bn"
   type: "BatchNorm"
@@ -53,7 +33,17 @@ layer {
   top: "Conv2d_1a_7x7"
 }
 
-
+layer {
+  name: "MaxPool_2a_3x3"
+  type: "Pooling"
+  bottom: "Conv2d_1a_7x7"
+  top: "MaxPool_2a_3x3"
+  pooling_param {
+    pool: MAX
+    kernel_size: 3
+    stride: 2
+  }
+}
 layer {
   name: "Conv2d_2b_1x1"
   type: "Convolution"
@@ -161,7 +151,27 @@ layer {
   }
 }
 
-
+layer {
+  name: "Mixed_3b/Branch_0/Conv2d_0a_1x1"
+  type: "Convolution"
+  bottom: "MaxPool_3a_3x3"
+  top: "Mixed_3b/Branch_0/Conv2d_0a_1x1"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  convolution_param {
+    bias_term: false
+    num_output: 64
+    pad: 0
+    kernel_size: 1
+    stride: 1
+    weight_filler {
+      type: "xavier"
+      std: 0.01
+    }
+  }
+}
 layer {
   name: "Mixed_3b/Branch_0/Conv2d_0a_1x1_bn"
   type: "BatchNorm"
@@ -363,27 +373,6 @@ layer {
   }
 }
 layer {
-  name: "Mixed_3b/Branch_0/Conv2d_0a_1x1"
-  type: "Convolution"
-  bottom: "MaxPool_3a_3x3"
-  top: "Mixed_3b/Branch_0/Conv2d_0a_1x1"
-  param {
-    lr_mult: 1
-    decay_mult: 1
-  }
-  convolution_param {
-    bias_term: false
-    num_output: 64
-    pad: 0
-    kernel_size: 1
-    stride: 1
-    weight_filler {
-      type: "xavier"
-      std: 0.01
-    }
-  }
-}
-layer {
   name: "Mixed_3b/Branch_2/Conv2d_0b_3x3_scale"
   type: "Scale"
   bottom: "Mixed_3b/Branch_2/Conv2d_0b_3x3"
@@ -443,7 +432,15 @@ layer {
     eps: 0.001
   }
 }
-
+layer {
+  name: "Mixed_3b/Branch_3/Conv2d_0b_1x1_scale"
+  type: "Scale"
+  bottom: "Mixed_3b/Branch_3/Conv2d_0b_1x1"
+  top: "Mixed_3b/Branch_3/Conv2d_0b_1x1"
+  scale_param {
+    bias_term: true
+  }
+}
 layer {
   name: "Mixed_3b/Branch_3/Conv2d_0b_1x1_relu"
   type: "ReLU"
@@ -599,15 +596,7 @@ layer {
   top: "Mixed_3c/Branch_1/Conv2d_0b_3x3"
 }
 
-layer {
-  name: "Mixed_3b/Branch_3/Conv2d_0b_1x1_scale"
-  type: "Scale"
-  bottom: "Mixed_3b/Branch_3/Conv2d_0b_1x1"
-  top: "Mixed_3b/Branch_3/Conv2d_0b_1x1"
-  scale_param {
-    bias_term: true
-  }
-}
+
 layer {
   name: "Mixed_3c/Branch_2/Conv2d_0a_1x1"
   type: "Convolution"
@@ -654,7 +643,27 @@ layer {
   bottom: "Mixed_3c/Branch_2/Conv2d_0a_1x1"
   top: "Mixed_3c/Branch_2/Conv2d_0a_1x1"
 }
-
+layer {
+  name: "Mixed_3c/Branch_2/Conv2d_0b_3x3"
+  type: "Convolution"
+  bottom: "Mixed_3c/Branch_2/Conv2d_0a_1x1"
+  top: "Mixed_3c/Branch_2/Conv2d_0b_3x3"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  convolution_param {
+    bias_term: false
+    num_output: 96
+    pad: 1
+    kernel_size: 3
+    stride: 1
+    weight_filler {
+      type: "xavier"
+      std: 0.01
+    }
+  }
+}
 layer {
   name: "Mixed_3c/Branch_2/Conv2d_0b_3x3_bn"
   type: "BatchNorm"
@@ -836,27 +845,6 @@ layer {
   batch_norm_param {
     use_global_stats: true
     eps: 0.001
-  }
-}
-layer {
-  name: "Mixed_3c/Branch_2/Conv2d_0b_3x3"
-  type: "Convolution"
-  bottom: "Mixed_3c/Branch_2/Conv2d_0a_1x1"
-  top: "Mixed_3c/Branch_2/Conv2d_0b_3x3"
-  param {
-    lr_mult: 1
-    decay_mult: 1
-  }
-  convolution_param {
-    bias_term: false
-    num_output: 96
-    pad: 1
-    kernel_size: 3
-    stride: 1
-    weight_filler {
-      type: "xavier"
-      std: 0.01
-    }
   }
 }
 layer {
@@ -2943,20 +2931,31 @@ layer {
     }
   }
 }
-layer {
-  name: "MaxPool_2a_3x3"
-  type: "Pooling"
-  bottom: "Conv2d_1a_7x7"
-  top: "MaxPool_2a_3x3"
-  pooling_param {
-    pool: MAX
-    kernel_size: 3
-    stride: 2
-  }
-}
+
 layer {
   name: "Predictions"
   type: "Softmax"
   bottom: "logits"
   top: "Predictions"
+}
+layer {
+  name: "Conv2d_1a_7x7"
+  type: "Convolution"
+  bottom: "inputs"
+  top: "Conv2d_1a_7x7"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  convolution_param {
+    bias_term: false
+    num_output: 64
+    pad: 3
+    kernel_size: 7
+    stride: 2
+    weight_filler {
+      type: "xavier"
+      std: 0.01
+    }
+  }
 }

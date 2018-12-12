@@ -7,7 +7,11 @@ import tensorflow as tf
 slim = tf.contrib.slim
 
 
-def InceptionV1(inputs, num_classes=1000, is_training=True, reuse=None, scope='InceptionV1'):
+def InceptionV1(inputs, num_classes=1000, is_training=True, reuse=None, scope='InceptionV1', config=None):
+
+selectdepth = lambda k,v: int(config[k]['ratio']*v) if config and k in config and 'ratio' in config[k] else v
+
+selectinput = lambda k, v: config[k]['input'] if config and k in config and 'input' in config[k] else v
 
 with tf.variable_scope(scope, "Model", reuse=reuse):
 with slim.arg_scope(default_arg_scope(is_training)):
